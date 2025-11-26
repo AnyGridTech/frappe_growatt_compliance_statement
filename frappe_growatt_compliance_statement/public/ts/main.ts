@@ -251,7 +251,7 @@ frappe.ui.form.on('Compliance Statement', {
 
             try {
                 const field = frm.fields_dict[pair.doc];
-                const description = field?.df?.description || '';
+                const description = field?.df?.['description'] || '';
 
                 if (description && /inválido|incompleto/i.test(description)) {
                     const fieldLabel = field?.df?.label || pair.doc;
@@ -504,7 +504,7 @@ function fields_listener(frm: FrappeForm<ComplianceStatement>) {
     Object.keys(frm.fields_dict).forEach((fn) => {
         const field = frm.fields_dict[fn];
         if (field && field.df) {
-            field.df.onchange = () => {
+            field.df['onchange'] = () => {
                 fields_handler(frm);
                 docPairs.forEach(pair => {
                     if (frm.fields_dict[pair.doc] !== undefined &&
