@@ -1,0 +1,559 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-11-11 17:31:04.889462",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "tab_public",
+  "section_ref_cust",
+  "ticket_docname",
+  "inanly_docname",
+  "main_customer_email",
+  "main_customer_name",
+  "column_break_hpks",
+  "main_eqp_serial_no",
+  "main_eqp_model",
+  "main_eqp_group",
+  "main_eqp_family",
+  "column_break_pdmg",
+  "main_eqp_model_ref",
+  "main_eqp_mppt_number",
+  "main_eqp_type",
+  "company",
+  "column_break_bzxi",
+  "main_uf_installation",
+  "distributor",
+  "section_agreement",
+  "column_break_zgkf",
+  "terms_and_conditions",
+  "check_agreement",
+  "section_cust_agreement",
+  "cust_taxid_type",
+  "cust_name",
+  "cust_taxid",
+  "column_break_zsep",
+  "cust_signature",
+  "section_cust_attachs",
+  "cust_attachs",
+  "section_inst_agreement",
+  "inst_taxid_type",
+  "inst_name",
+  "inst_taxid",
+  "column_break_hgkq",
+  "inst_signature",
+  "section_inst_attachs",
+  "inst_attachs",
+  "section_fiscal",
+  "fiscal_taxid",
+  "fiscal_nf_uf",
+  "fiscal_icms_taxpayer",
+  "section_delivery",
+  "delivery_taxid_type",
+  "delivery_name",
+  "delivery_taxid",
+  "column_break_wrig",
+  "delivery_cep",
+  "delivery_address",
+  "delivery_n",
+  "delivery_obs",
+  "column_break_ufsk",
+  "delivery_hood",
+  "delivery_city",
+  "delivery_uf",
+  "column_break_fkgl",
+  "delivery_phone_alt",
+  "delivery_phone",
+  "delivery_allow_pickup",
+  "section_pickup",
+  "pickup_taxid_type",
+  "pickup_name",
+  "pickup_taxid",
+  "column_break_kwhu",
+  "pickup_cep",
+  "pickup_address",
+  "pickup_n",
+  "pickup_obs",
+  "column_break_xoie",
+  "pickup_hood",
+  "pickup_city",
+  "pickup_uf",
+  "column_break_qite",
+  "pickup_phone",
+  "pickup_phone_alt",
+  "section_confirm_all",
+  "confirm_all",
+  "tab_private",
+  "amended_from",
+  "corrections_tracker"
+ ],
+ "fields": [
+  {
+   "fieldname": "tab_public",
+   "fieldtype": "Tab Break",
+   "label": "Public"
+  },
+  {
+   "fieldname": "section_ref_cust",
+   "fieldtype": "Section Break",
+   "label": "Informa\u00e7\u00f5es Origin\u00e1rias"
+  },
+  {
+   "fieldname": "ticket_docname",
+   "fieldtype": "Link",
+   "label": "Protocolo Referenciado",
+   "options": "Ticket"
+  },
+  {
+   "fieldname": "inanly_docname",
+   "fieldtype": "Link",
+   "label": "Protocolo Referenciado Copy",
+   "options": "Ticket"
+  },
+  {
+   "fieldname": "main_customer_email",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "E-mail Principal",
+   "options": "User"
+  },
+  {
+   "fetch_from": "main_customer_email.first_name",
+   "fieldname": "main_customer_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Nome",
+   "options": "User"
+  },
+  {
+   "fieldname": "column_break_hpks",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "main_eqp_serial_no",
+   "fieldtype": "Data",
+   "label": "N\u00famero de S\u00e9rie",
+   "options": "Serial No"
+  },
+  {
+   "fetch_from": "main_eqp_serial_no.item_name",
+   "fieldname": "main_eqp_model",
+   "fieldtype": "Data",
+   "label": "Modelo",
+   "options": "Item"
+  },
+  {
+   "fetch_from": "main_eqp_serial_no.item_name",
+   "fieldname": "main_eqp_group",
+   "fieldtype": "Data",
+   "label": "Grupo",
+   "options": "Item"
+  },
+  {
+   "fetch_from": "main_eqp_serial_no.item_name",
+   "fieldname": "main_eqp_family",
+   "fieldtype": "Data",
+   "label": "Familia",
+   "options": "Item"
+  },
+  {
+   "fieldname": "column_break_pdmg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "main_eqp_model_ref",
+   "fieldtype": "Data",
+   "label": "Refer\u00eancia do Modelo",
+   "options": "Distributor"
+  },
+  {
+   "fieldname": "main_eqp_mppt_number",
+   "fieldtype": "Data",
+   "label": "N\u00famero de MPPT"
+  },
+  {
+   "fieldname": "main_eqp_type",
+   "fieldtype": "Data",
+   "label": "Tipo"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "permlevel": 2
+  },
+  {
+   "fieldname": "column_break_bzxi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "main_uf_installation",
+   "fieldtype": "Data",
+   "label": "UF da Instala\u00e7\u00e3o"
+  },
+  {
+   "fieldname": "distributor",
+   "fieldtype": "Link",
+   "label": "Distribuidor",
+   "options": "Distributor"
+  },
+  {
+   "fieldname": "section_agreement",
+   "fieldtype": "Section Break",
+   "label": "Termo de Servi\u00e7o"
+  },
+  {
+   "fieldname": "column_break_zgkf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "terms_and_conditions",
+   "fieldtype": "Text Editor",
+   "label": "Termos e Condi\u00e7\u00f5es",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "check_agreement",
+   "fieldtype": "Check",
+   "label": "Concorda com os termos?"
+  },
+  {
+   "fieldname": "section_cust_agreement",
+   "fieldtype": "Section Break",
+   "label": "Dados do Cliente"
+  },
+  {
+   "fieldname": "cust_taxid_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Pessoa",
+   "options": "\nPessoa F\u00edsica\nPessoa Jur\u00eddica"
+  },
+  {
+   "fieldname": "cust_name",
+   "fieldtype": "Data",
+   "label": "Nome/Raz\u00e3o Social"
+  },
+  {
+   "fieldname": "cust_taxid",
+   "fieldtype": "Data",
+   "label": "CPF/CNPJ"
+  },
+  {
+   "fieldname": "column_break_zsep",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cust_signature",
+   "fieldtype": "Signature",
+   "label": "Assinatura do Cliente"
+  },
+  {
+   "fieldname": "section_cust_attachs",
+   "fieldtype": "Section Break",
+   "label": "Anexos do Cliente"
+  },
+  {
+   "fieldname": "cust_attachs",
+   "fieldtype": "Table",
+   "options": "Attachments Table"
+  },
+  {
+   "fieldname": "section_inst_agreement",
+   "fieldtype": "Section Break",
+   "label": "Dados do Instalador"
+  },
+  {
+   "fieldname": "inst_taxid_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Pessoa",
+   "options": "\nPessoa F\u00edsica\nPessoa Jur\u00eddica"
+  },
+  {
+   "fieldname": "inst_name",
+   "fieldtype": "Data",
+   "label": "Nome/Raz\u00e3o Social"
+  },
+  {
+   "fieldname": "inst_taxid",
+   "fieldtype": "Data",
+   "label": "CPF/CNPJ"
+  },
+  {
+   "fieldname": "column_break_hgkq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "inst_signature",
+   "fieldtype": "Signature",
+   "label": "Assinatura do Instalador"
+  },
+  {
+   "fieldname": "section_inst_attachs",
+   "fieldtype": "Section Break",
+   "label": "Anexos do Instalador"
+  },
+  {
+   "fieldname": "inst_attachs",
+   "fieldtype": "Table",
+   "options": "Attachments Table"
+  },
+  {
+   "fieldname": "section_fiscal",
+   "fieldtype": "Section Break",
+   "label": "Dados para Emiss\u00e3o da Nota Fiscal"
+  },
+  {
+   "fieldname": "fiscal_taxid",
+   "fieldtype": "Data",
+   "label": "CPF/CNPJ"
+  },
+  {
+   "fieldname": "fiscal_nf_uf",
+   "fieldtype": "Link",
+   "label": "UF da Nota de Compra",
+   "options": "UF"
+  },
+  {
+   "default": "0",
+   "fieldname": "fiscal_icms_taxpayer",
+   "fieldtype": "Check",
+   "label": "Contribuinte de ICMS?"
+  },
+  {
+   "fieldname": "section_delivery",
+   "fieldtype": "Section Break",
+   "label": "Dados de Entrega"
+  },
+  {
+   "default": "Pessoa F\u00edsica",
+   "fieldname": "delivery_taxid_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Pessoa",
+   "no_copy": 1,
+   "options": "Pessoa F\u00edsica",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "delivery_name",
+   "fieldtype": "Data",
+   "label": "Respons\u00e1vel"
+  },
+  {
+   "fieldname": "delivery_taxid",
+   "fieldtype": "Data",
+   "label": "CPF"
+  },
+  {
+   "fieldname": "column_break_wrig",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "delivery_cep",
+   "fieldtype": "Data",
+   "label": "CEP"
+  },
+  {
+   "fieldname": "delivery_address",
+   "fieldtype": "Data",
+   "label": "Endere\u00e7o"
+  },
+  {
+   "fieldname": "delivery_n",
+   "fieldtype": "Data",
+   "label": "N\u00ba"
+  },
+  {
+   "fieldname": "delivery_obs",
+   "fieldtype": "Data",
+   "label": "Complemento"
+  },
+  {
+   "fieldname": "column_break_ufsk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "delivery_hood",
+   "fieldtype": "Data",
+   "label": "Bairro"
+  },
+  {
+   "fieldname": "delivery_city",
+   "fieldtype": "Data",
+   "label": "Cidade"
+  },
+  {
+   "fieldname": "delivery_uf",
+   "fieldtype": "Link",
+   "label": "Estado",
+   "options": "UF"
+  },
+  {
+   "fieldname": "column_break_fkgl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "delivery_phone_alt",
+   "fieldtype": "Data",
+   "label": "Contato Alternativo"
+  },
+  {
+   "fieldname": "delivery_phone",
+   "fieldtype": "Data",
+   "label": "Contato"
+  },
+  {
+   "description": "<span style=\"color:red;\">*Essa op\u00e7\u00e3o n\u00e3o pode ser desfeita ap\u00f3s a cria\u00e7\u00e3o da nota fiscal</span>",
+   "fieldname": "delivery_allow_pickup",
+   "fieldtype": "Select",
+   "label": "Coletar em um endere\u00e7o diferente?",
+   "options": "\nSim\nN\u00e3o"
+  },
+  {
+   "fieldname": "section_pickup",
+   "fieldtype": "Section Break",
+   "label": "Dados de Coleta"
+  },
+  {
+   "default": "Pessoa F\u00edsica",
+   "fieldname": "pickup_taxid_type",
+   "fieldtype": "Select",
+   "label": "Tipo de Pessoa",
+   "no_copy": 1,
+   "options": "Pessoa F\u00edsica",
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "pickup_name",
+   "fieldtype": "Data",
+   "label": "Respons\u00e1vel"
+  },
+  {
+   "fieldname": "pickup_taxid",
+   "fieldtype": "Data",
+   "label": "CPF"
+  },
+  {
+   "fieldname": "column_break_kwhu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pickup_cep",
+   "fieldtype": "Data",
+   "label": "CEP"
+  },
+  {
+   "fieldname": "pickup_address",
+   "fieldtype": "Data",
+   "label": "Endere\u00e7o"
+  },
+  {
+   "fieldname": "pickup_n",
+   "fieldtype": "Data",
+   "label": "N\u00ba"
+  },
+  {
+   "fieldname": "pickup_obs",
+   "fieldtype": "Data",
+   "label": "Complemento"
+  },
+  {
+   "fieldname": "column_break_xoie",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pickup_hood",
+   "fieldtype": "Data",
+   "label": "Bairro"
+  },
+  {
+   "fieldname": "pickup_city",
+   "fieldtype": "Data",
+   "label": "Cidade"
+  },
+  {
+   "fieldname": "pickup_uf",
+   "fieldtype": "Link",
+   "label": "Estado",
+   "options": "UF"
+  },
+  {
+   "fieldname": "column_break_qite",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Brazil (+55)",
+   "fieldname": "pickup_phone",
+   "fieldtype": "Data",
+   "label": "Contato"
+  },
+  {
+   "default": "+55",
+   "fieldname": "pickup_phone_alt",
+   "fieldtype": "Data",
+   "label": "Contato Alternativo"
+  },
+  {
+   "fieldname": "section_confirm_all",
+   "fieldtype": "Section Break",
+   "label": "Valida\u00e7\u00e3o"
+  },
+  {
+   "default": "0",
+   "description": "<span style=\"color:red;\">*Essa op\u00e7\u00e3o n\u00e3o pode ser desfeita ap\u00f3s a cria\u00e7\u00e3o da nota fiscal</span>",
+   "fieldname": "confirm_all",
+   "fieldtype": "Check",
+   "label": "Confirma que todas as informa\u00e7\u00f5es est\u00e3o corretas?"
+  },
+  {
+   "fieldname": "tab_private",
+   "fieldtype": "Tab Break",
+   "label": "Private"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Compliance Statement",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "corrections_tracker",
+   "fieldtype": "Table",
+   "label": "Pedidos de Corre\u00e7\u00e3o",
+   "options": "Corrections Tracker"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-12-18 20:46:25.112702",
+ "modified_by": "Administrator",
+ "module": "Frappe Growatt Compliance Statement",
+ "name": "Compliance Statement",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
