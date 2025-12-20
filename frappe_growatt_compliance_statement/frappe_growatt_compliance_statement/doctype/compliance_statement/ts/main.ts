@@ -1,4 +1,4 @@
-// Declarações e importações originais
+// Original declarations and imports
 import { FrappeDoc, FrappeForm } from "@anygridtech/frappe-types/client/frappe/core";
 import { ComplianceStatement, SerialNo } from "@anygridtech/frappe-agt-types/agt/doctype";
 
@@ -22,7 +22,7 @@ const docPairs = [
     { doc: 'fiscal_taxid', type: '' }
 ];
 
-// // Array com os nomes dos campos de telefone que receberão DDI automático
+// // Array with the names of phone fields that will receive automatic DDI
 // const phoneFields = [
 //     'delivery_phone',
 //     'delivery_phone_alt',
@@ -45,7 +45,7 @@ frappe.ui.form.on('Compliance Statement', {
         fields_listener(frm);
 
         // Verifica se o workflow está no estado avançado e força confirm_all = 1
-        const isAdvancedWorkflow = frm.doc.workflow_state === agt.metadata.doctype.compliance_statement.workflow_state.growatt_preliminary_assessment.name;
+        const isAdvancedWorkflow = frm.doc.workflow_state === agt.metadata.doctype.compliance_statement.workflow_state.finished.name;
         if (isAdvancedWorkflow && !frm.doc.confirm_all) {
             frappe.db.set_value(
                 frm.doc.doctype,
@@ -102,10 +102,23 @@ frappe.ui.form.on('Compliance Statement', {
     state(frm: FrappeForm<ComplianceStatement>) {
         if (frm.doc.uf_of_note && frm.doc.state && frm.doc.uf_of_note !== frm.doc.state) {
             frappe.msgprint({
-                title: __('Atenção'),
-                message: __('A UF precisa ser a mesma da nota de compra'),
+                title: __('Attention'),
+                message: __('The state (UF) must be the same as the invoice state'),
                 indicator: 'orange',
             });
+        }
+    },
+
+    button_terms_and_conditions() {
+        const url = 'https://drive.google.com/uc?export=download&id=1GiSwo6qmxlBqrlXU4s3oBzSU-uYmJf3_';
+        try {
+            if (window.top) {
+                window.top.open(url, '_blank', 'noopener');
+            } else {
+                window.open(url, '_blank', 'noopener');
+            }
+        } catch (e) {
+            window.open(url, '_blank', 'noopener');
         }
     },
 
@@ -135,7 +148,7 @@ frappe.ui.form.on('Compliance Statement', {
     confirm_all(frm: FrappeForm<ComplianceStatement>) {
         if (frm.doc.confirm_all) {
             const confirmDialog = frappe.confirm(
-                'Tem certeza que deseja confirmar tudo? Após salvar o formulário, não será mais possível editar.',
+                'Are you sure you want to confirm everything? After saving the form, it will no longer be possible to edit.',
                 async () => {
                     frappe.db.set_value(
                         frm.doc.doctype,
@@ -145,27 +158,27 @@ frappe.ui.form.on('Compliance Statement', {
                         async () => {
                             try {
                                 console.log('Campo confirm_all atualizado com sucesso');
-                                
+
                                 await agt.utils.update_workflow_state({
                                     doctype: frm.doc.doctype,
                                     docname: frm.doc.name,
                                     workflow_state: agt.metadata.doctype.compliance_statement.workflow_state.finished.name,
                                     ignore_workflow_validation: true
                                 });
-                                
-                                // Exibir mensagem de sucesso
+
+                                // Show success message
                                 frappe.show_alert({
-                                    message: 'Formulário confirmado com sucesso!',
+                                    message: 'Form successfully confirmed!',
                                     indicator: 'green'
                                 }, 5);
 
-                                // Recarregar o formulário para garantir que todos os campos estejam atualizados
+                                // Reload the form to ensure all fields are updated
                                 frm.reload_doc();
                             } catch (error) {
-                                console.error('Erro ao confirmar formulário:', error);
+                                console.error('Error confirming form:', error);
                                 frappe.msgprint({
-                                    title: __('Erro'),
-                                    message: __('Ocorreu um erro ao confirmar o formulário. Por favor, tente novamente.'),
+                                    // Reload the form to ensure all fields are updated
+                                    message: __('An error occurred while confirming the form. Please try again.'),
                                     indicator: 'red'
                                 });
                                 frm.set_value('confirm_all', 0);
@@ -178,9 +191,9 @@ frappe.ui.form.on('Compliance Statement', {
                 }
             );
 
-            confirmDialog.set_title("Confirmar");
-            confirmDialog.set_primary_action("Sim, tenho certeza.");
-            confirmDialog.set_secondary_action_label("Não, ainda estou editando.");
+            confirmDialog.set_title("Confirm");
+            confirmDialog.set_primary_action("Yes, I'm sure.");
+            confirmDialog.set_secondary_action_label("No, I'm still editing.");
         }
     },
     cust_taxid_type(frm: FrappeForm<ComplianceStatement>) {
@@ -195,17 +208,17 @@ frappe.ui.form.on('Compliance Statement', {
 
         const hasFilled = (frm.doc.cust_attachs || []).some((row: any) => row.attach);
         if (hasFilled) {
-            frappe.show_alert({ message: 'Documentos já inseridos — alterações ignoradas.', indicator: 'blue' }, 5);
+            frappe.show_alert({ message: 'Documents already inserted — changes ignored.', indicator: 'blue' }, 5);
             return;
         }
 
         frm.doc.cust_attachs = [];
         frm.refresh_field('cust_attachs');
 
-        const docType = type === 'Pessoa Física' ? 'RG' : 'Contrato Social';
+        const docType = type === 'Individual' ? 'RG' : 'Contrato Social';
         frm.add_child('cust_attachs', { attach_type: docType });
 
-        frappe.show_alert({ message: 'Insira os documentos necessários para o instalador.', indicator: 'yellow' }, 10);
+        frappe.show_alert({ message: 'Please insert the required documents for the installer.', indicator: 'yellow' }, 10);
         frappe.utils.play_sound("alert");
 
         frm.refresh_field('cust_attachs');
@@ -222,17 +235,17 @@ frappe.ui.form.on('Compliance Statement', {
 
         const hasFilled = (frm.doc.inst_attachs || []).some((row: any) => row.attach);
         if (hasFilled) {
-            frappe.show_alert({ message: 'Documentos já inseridos — alterações ignoradas.', indicator: 'blue' }, 5);
+            frappe.show_alert({ message: 'Documents already inserted — changes ignored.', indicator: 'blue' }, 5);
             return;
         }
 
         frm.doc.inst_attachs = [];
         frm.refresh_field('inst_attachs');
 
-        const docType = type === 'Pessoa Física' ? 'RG' : 'Contrato Social';
+        const docType = type === 'Individual' ? 'RG' : 'Contrato Social';
         frm.add_child('inst_attachs', { attach_type: docType });
 
-        frappe.show_alert({ message: 'Insira os documentos necessários para o instalador.', indicator: 'yellow' }, 10);
+        frappe.show_alert({ message: 'Please insert the required documents for the installer.', indicator: 'yellow' }, 10);
         frappe.utils.play_sound("alert");
 
         frm.refresh_field('inst_attachs');
@@ -257,40 +270,40 @@ frappe.ui.form.on('Compliance Statement', {
                     const fieldLabel = field?.df?.label || pair.doc;
 
                     frappe.msgprint({
-                        title: __('Documento Inválido'),
-                        message: __(`Documento inválido no campo ${fieldLabel}. Favor corrigir antes de salvar.`),
+                        title: __('Invalid Document'),
+                        message: __(`Invalid document in field ${fieldLabel}. Please correct before saving.`),
                         indicator: 'red'
                     });
 
                     allValid = false;
-                    console.warn(`Validação falhou para o campo ${pair.doc}: ${description}`);
+                    console.warn(`Validation failed for field ${pair.doc}: ${description}`);
                 }
             } catch (e) {
-                console.error(`Erro ao verificar campo ${pair.doc}:`, e);
+                console.error(`Error checking field ${pair.doc}:`, e);
                 allValid = false;
             }
         });
 
         if (frm.doc.cust_taxid_type &&
-            (frm.doc.cust_taxid_type === 'Pessoa Física' || frm.doc.cust_taxid_type === 'Pessoa Jurídica') &&
+            (frm.doc.cust_taxid_type === 'Individual' || frm.doc.cust_taxid_type === 'Legal Entity') &&
             !isAttached(frm, 'cust_attachs', ['attach_type', 'attach'])) {
-            frappe.msgprint(__('Adicione todos os anexos do cliente antes de continuar.'));
+            frappe.msgprint(__('Add all customer attachments before continuing.'));
             allValid = false;
         }
 
         if (frm.doc.inst_taxid_type &&
-            (frm.doc.inst_taxid_type === 'Pessoa Física' || frm.doc.inst_taxid_type === 'Pessoa Jurídica') &&
+            (frm.doc.inst_taxid_type === 'Individual' || frm.doc.inst_taxid_type === 'Legal Entity') &&
             !isAttached(frm, 'inst_attachs', ['attach_type', 'attach'])) {
-            frappe.msgprint(__('Adicione todos os anexos do instalador antes de continuar.'));
+            frappe.msgprint(__('Add all installer attachments before continuing.'));
             allValid = false;
         }
 
         if (!allValid) {
             frappe.validated = false;
-            frappe.throw(__('Corrija os erros antes de salvar'));
+            frappe.throw(__('Fix the errors before saving'));
             return false;
         }
-        
+
         return true;
     },
 });
@@ -306,17 +319,12 @@ function setItemDetails(frm: FrappeForm, eqp_model: string): void {
 function fields_handler(frm: FrappeForm<ComplianceStatement>) {
 
     /* ===========================================================
-    * ===> Father Section
-    * ===========================================================
-    */
+     * ===> Reference Section
+     * ===========================================================
+     */
 
     const showRefFields = [
-        'ref_naming_series',
-        'main_customer_email',
-        'main_customer_name',
-        'main_eqp_model',
-        'main_eqp_serial_no',
-        'distributor'
+        'ref_naming_series'
     ];
     showRefFields.forEach((f) => {
         const has = !!frm.doc[f as keyof FrappeDoc];
@@ -330,12 +338,7 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
      */
 
     const showAgreement = [
-        'ticket_docname',
-        'main_customer_email',
-        'main_customer_name',
-        'main_eqp_model',
-        'main_eqp_serial_no',
-        'distributor',
+        'ticket_docname'
     ].every((field) => frm.doc[field]);
     frm.set_df_property('section_agreement', 'hidden', showAgreement ? 0 : 1);
 
@@ -345,6 +348,7 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
      */
 
     const customerTypeFields = [
+        'button_terms_and_conditions',
         'section_cust_agreement',
         'section_cust_attachs',
         'section_inst_agreement',
@@ -352,34 +356,43 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
         'cust_taxid_type',
         'cust_name',
         'cust_taxid',
-        'cust_signature',
+        // 'cust_signature', // Do not hide signature
         'inst_taxid_type',
         'inst_name',
         'inst_taxid',
-        'inst_signature',
+        // 'inst_signature', // Do not hide signature
     ];
     customerTypeFields.forEach(field => frm.set_df_property(field, 'hidden', frm.doc.check_agreement ? 0 : 1));
+
+    // // Signatures always visible
+    // frm.set_df_property('cust_signature', 'hidden', 0);
+    // frm.set_df_property('inst_signature', 'hidden', 0);
+    // We had to hide the signatures because it is obsolete (don't remove it)
+    frm.set_df_property('cust_signature', 'hidden', 1);
+    frm.set_df_property('inst_signature', 'hidden', 1);
 
     const customerFields = [
         'cust_name',
         'cust_taxid',
-        'cust_signature',
         'section_cust_attachs',
+        // 'cust_signature', // Do not hide signature
     ];
     customerFields.forEach(field => frm.set_df_property(field, 'hidden', frm.doc.cust_taxid_type ? 0 : 1));
+    frm.set_df_property('cust_signature', 'hidden', 0);
 
     /* ===========================================================
-     * ===> Installers's Data Section
+     * ===> Installer's Data Section
      * ===========================================================
      */
 
     const installerFields = [
         'inst_name',
         'inst_taxid',
-        'inst_signature',
         'section_inst_attachs',
+        // 'inst_signature', // Do not hide signature
     ];
     installerFields.forEach(field => frm.set_df_property(field, 'hidden', frm.doc.inst_taxid_type ? 0 : 1));
+    frm.set_df_property('inst_signature', 'hidden', 0);
 
     /* ===========================================================
      * ===> Fiscal Section
@@ -391,10 +404,11 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
         'cust_taxid',
         'cust_name',
         'cust_signature',
-        'inst_taxid_type',
-        'inst_taxid',
-        'inst_name',
-        'inst_signature',
+        // We disabled the obligation to fill the installer signature
+        // 'inst_taxid_type',
+        // 'inst_taxid',
+        // 'inst_name',
+        // 'inst_signature',
     ].every((field) => frm.doc[field]);
     frm.set_df_property('section_fiscal', 'hidden', (showFiscalSection && isAttached(frm, 'cust_attachs', ['attach_type', 'attach']) && isAttached(frm, 'inst_attachs', ['attach_type', 'attach'])) ? 0 : 1);
 
@@ -411,7 +425,7 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
      * ===========================================================
      */
 
-    frm.set_df_property('section_pickup', 'hidden', (frm.doc.delivery_allow_pickup === "Sim") ? 0 : 1);
+    frm.set_df_property('section_pickup', 'hidden', (frm.doc.delivery_allow_pickup === "Yes") ? 0 : 1);
 
     /* ===========================================================
      * ===> Final Confirmation Section
@@ -422,7 +436,7 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
 
     if (frm.doc.delivery_allow_pickup === "") {
         showConfirmAll = false;
-    } else if (frm.doc.delivery_allow_pickup === "Não") {
+    } else if (frm.doc.delivery_allow_pickup === "No") {
         showConfirmAll = [
             'delivery_taxid_type',
             'delivery_name',
@@ -435,7 +449,7 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
             'delivery_city',
             'delivery_phone'
         ].every(field => frm.doc[field]);
-    } else if (frm.doc.delivery_allow_pickup === "Sim") {
+    } else if (frm.doc.delivery_allow_pickup === "Yes") {
         showConfirmAll = [
             'delivery_taxid_type',
             'delivery_name',
@@ -471,27 +485,29 @@ function read_only_handler(frm: FrappeForm<ComplianceStatement>) {
     frm.set_df_property('cust_signature', 'read_only', frm.doc.confirm_all ? 1 : 0);
     frm.set_df_property('inst_signature', 'read_only', frm.doc.confirm_all ? 1 : 0);
 
-    // Se o workflow já avançou para o estado de avaliação preliminar,
-    // garante que o campo confirm_all permaneça marcado e somente leitura
-    const isAdvancedWorkflow = frm.doc.workflow_state === agt.metadata.doctype.compliance_statement.workflow_state.growatt_preliminary_assessment.name;
+    // If the workflow has already advanced to the preliminary evaluation state,
+    // ensures that the confirm_all field remains checked and read-only
+    const isAdvancedWorkflow = frm.doc.workflow_state === agt.metadata.doctype.compliance_statement.workflow_state.finished.name;
     if (isAdvancedWorkflow && !frm.doc.confirm_all) {
         frm.set_value('confirm_all', 1);
     }
 
+    frm.set_df_property('button_terms_and_conditions', 'hidden', (isAdvancedWorkflow) ? 1 : 0);
     frm.set_df_property('confirm_all', 'read_only', (frm.doc.confirm_all && isAdvancedWorkflow) ? 1 : 0);
 }
 
 function load_terms(frm: FrappeForm<ComplianceStatement>) {
-    // Remove o salvamento automático para evitar problemas
+    // Remove auto-save to avoid issues
     if (typeof agt !== 'undefined' && agt.utils.form.field.is_empty(frm.doc.terms_and_conditions)) {
-        frappe.db.get_value('Terms and Conditions', 'Termo Dentro de Garantia', 'terms', (r: { terms?: string }) => {
+        frappe.db.get_value('Terms and Conditions', 'Term 4.1', 'terms', (r: { terms?: string }) => {
             if (r?.terms) {
                 frm.set_value('terms_and_conditions', r.terms);
-                agt.utils.dialog.show_debugger_alert(frm, 'Termo carregado.', 'green', 5);
+                agt.utils.dialog.show_debugger_alert(frm, 'Terms loaded.', 'green', 5);
             } else {
-                agt.utils.dialog.show_debugger_alert(frm, 'Termo não encontrado.', 'red', 5);
+                agt.utils.dialog.show_debugger_alert(frm, 'Terms not found.', 'red', 5);
             }
             frm.set_df_property('terms_and_conditions', 'read_only', 1);
+            frm.set_df_property('terms_and_conditions', 'hidden', 1);
             frm.refresh_field('terms_and_conditions');
             // frm.dirty();
             // frm.save();
@@ -508,14 +524,14 @@ function fields_listener(frm: FrappeForm<ComplianceStatement>) {
                 fields_handler(frm);
                 docPairs.forEach(pair => {
                     if (frm.fields_dict[pair.doc] !== undefined &&
-                            frm.fields_dict[pair.doc] !== null &&
-                            frm.fields_dict[pair.doc]?.$input !== undefined) {
-                            try {
-                                agt.utils.document_id(frm, pair.doc, pair.type || undefined);
-                            } catch (e) {
-                                console.log(`Erro ao processar campo ${pair.doc}:`, e);
-                            }
+                        frm.fields_dict[pair.doc] !== null &&
+                        frm.fields_dict[pair.doc]?.$input !== undefined) {
+                        try {
+                            agt.utils.document_id(frm, pair.doc, pair.type || undefined);
+                        } catch (e) {
+                            console.log(`Error processing field ${pair.doc}:`, e);
                         }
+                    }
                 });
             };
         }
@@ -525,6 +541,7 @@ function fields_listener(frm: FrappeForm<ComplianceStatement>) {
 function isAttached(frm: FrappeForm, selectedTable: string, requiredFields: string[]): boolean {
     const rows = frm.doc[selectedTable];
     if (!rows || !rows.length) return false;
+    // All required fields must be filled for each row
     return rows.every((row: any) =>
         requiredFields.every(field => !!row[field])
     );
