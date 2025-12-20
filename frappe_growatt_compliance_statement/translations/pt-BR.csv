@@ -1,0 +1,60 @@
+Yes,Sim,pt-BR
+No,Não,pt-BR
+Attention,Atenção,pt-BR
+The state (UF) must be the same as the invoice state,UF deve ser igual ao da nota fiscal,pt-BR
+Are you sure you want to confirm everything? After saving the form, it will no longer be possible to edit.,Tem certeza que deseja confirmar tudo? Após salvar o formulário, não será mais possível editar.,pt-BR
+Form successfully confirmed!,Formulário confirmado com sucesso!,pt-BR
+An error occurred while confirming the form. Please try again.,Ocorreu um erro ao confirmar o formulário. Por favor, tente novamente.,pt-BR
+Confirm,Confirmar,pt-BR
+Yes, I'm sure.,Sim, tenho certeza.,pt-BR
+No, I'm still editing.,Não, ainda estou editando.,pt-BR
+Documents already inserted — changes ignored.,Documentos já inseridos — alterações ignoradas.,pt-BR
+Please insert the required documents for the installer.,Por favor, insira os documentos obrigatórios do instalador.,pt-BR
+Invalid Document,Documento Inválido,pt-BR
+Invalid document in field ${fieldLabel}. Please correct before saving.,Documento inválido no campo ${fieldLabel}. Corrija antes de salvar.,pt-BR
+Add all customer attachments before continuing.,Adicione todos os anexos do cliente antes de continuar.,pt-BR
+Add all installer attachments before continuing.,Adicione todos os anexos do instalador antes de continuar.,pt-BR
+Fix the errors before saving,Resolva os erros antes de salvar,pt-BR
+Terms loaded.,Termos carregados.,pt-BR
+Terms not found.,Termos não encontrados.,pt-BR
+
+Public,Público,pt-BR
+Series,Série,pt-BR
+Info Card,Info Card,pt-BR
+Informatory Data,Informaçōes Originárias,pt-BR
+Referenced Protocol,Protocolo Referenciado,pt-BR
+Service Agreement,Termo de Serviço,pt-BR
+Download Terms and Conditions,Download Termos e Condições,pt-BR
+I have read, signed and agree with the terms and conditions above,Li, assinei e concordei com os termos e condições acima,pt-BR
+Customer Data,Dados do Cliente,pt-BR
+Person Type,Tipo de Pessoa,pt-BR
+Name/Corporate Name,Nome/Razão Social,pt-BR
+CPF/CNPJ,CPF/CNPJ,pt-BR
+Customer Signature,Assinatura do Cliente,pt-BR
+Customer Attachments,Anexos do Cliente,pt-BR
+Installer Data,Dados do Instalador,pt-BR
+Installer Signature,Assinatura do Instalador,pt-BR
+Installer Attachments,Anexos do Instalador,pt-BR
+Fiscal Data,Dados para Emissão da Nota Fiscal,pt-BR
+Invoice State UF,UF da Nota de Compra,pt-BR
+ICMS Taxpayer?,Contribuinte de ICMS?,pt-BR
+Delivery Data,Dados de Entrega,pt-BR
+Responsible,Responsável,pt-BR
+CPF,CPF,pt-BR
+CEP,CEP,pt-BR
+Address,Endereço,pt-BR
+Number,Nº,pt-BR
+Complement,Complemento,pt-BR
+Neighborhood,Bairro,pt-BR
+City,Cidade,pt-BR
+State,Estado,pt-BR
+Alternative Contact,Contato Alternativo,pt-BR
+Contact,Contato,pt-BR
+Collect at a different address?,Coletar em um endereço diferente?,pt-BR
+This option cannot be undone after the invoice is created,*Essa opção não pode ser desfeita após a criação da nota fiscal,pt-BR
+Pickup Data,Dados de Coleta,pt-BR
+Validation,Validação,pt-BR
+Confirms that all information is correct?,Confirma que todas as informações estão corretas?,pt-BR
+Private,Privado,pt-BR
+Amended From,Amendado De,pt-BR
+Correction Requests,Pedidos de Correção,pt-BR

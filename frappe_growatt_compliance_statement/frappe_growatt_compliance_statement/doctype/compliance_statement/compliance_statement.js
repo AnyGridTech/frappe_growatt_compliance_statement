@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 "use strict";
 (() => {
-  // public/ts/main.ts
+  // frappe_growatt_compliance_statement/doctype/compliance_statement/ts/main.ts
   frappe.ui.form.on(cur_frm.doc.doctype, "setup", async () => {
     await agt.setup.run();
   });
@@ -24,7 +24,7 @@
     refresh(frm) {
       load_terms(frm);
       fields_listener(frm);
-      const isAdvancedWorkflow = frm.doc.workflow_state === agt.metadata.doctype.compliance_statement.workflow_state.growatt_preliminary_assessment.name;
+      const isAdvancedWorkflow = frm.doc.workflow_state === agt.metadata.doctype.compliance_statement.workflow_state.finished.name;
       if (isAdvancedWorkflow && !frm.doc.confirm_all) {
         frappe.db.set_value(
           frm.doc.doctype,
@@ -74,10 +74,22 @@
     state(frm) {
       if (frm.doc.uf_of_note && frm.doc.state && frm.doc.uf_of_note !== frm.doc.state) {
         frappe.msgprint({
-          title: __("Aten\xE7\xE3o"),
-          message: __("A UF precisa ser a mesma da nota de compra"),
+          title: __("Attention"),
+          message: __("The state (UF) must be the same as the invoice state"),
           indicator: "orange"
         });
+      }
+    },
+    button_terms_and_conditions() {
+      const url = "https://drive.google.com/uc?export=download&id=1GiSwo6qmxlBqrlXU4s3oBzSU-uYmJf3_";
+      try {
+        if (window.top) {
+          window.top.open(url, "_blank", "noopener");
+        } else {
+          window.open(url, "_blank", "noopener");
+        }
+      } catch (e) {
+        window.open(url, "_blank", "noopener");
       }
     },
     delivery_cep(frm) {
@@ -101,7 +113,7 @@
     confirm_all(frm) {
       if (frm.doc.confirm_all) {
         const confirmDialog = frappe.confirm(
-          "Tem certeza que deseja confirmar tudo? Ap\xF3s salvar o formul\xE1rio, n\xE3o ser\xE1 mais poss\xEDvel editar.",
+          "Are you sure you want to confirm everything? After saving the form, it will no longer be possible to edit.",
           async () => {
             frappe.db.set_value(
               frm.doc.doctype,
@@ -118,15 +130,15 @@
                     ignore_workflow_validation: true
                   });
                   frappe.show_alert({
-                    message: "Formul\xE1rio confirmado com sucesso!",
+                    message: "Form successfully confirmed!",
                     indicator: "green"
                   }, 5);
                   frm.reload_doc();
                 } catch (error) {
-                  console.error("Erro ao confirmar formul\xE1rio:", error);
+                  console.error("Error confirming form:", error);
                   frappe.msgprint({
-                    title: __("Erro"),
-                    message: __("Ocorreu um erro ao confirmar o formul\xE1rio. Por favor, tente novamente."),
+                    // Reload the form to ensure all fields are updated
+                    message: __("An error occurred while confirming the form. Please try again."),
                     indicator: "red"
                   });
                   frm.set_value("confirm_all", 0);
@@ -138,9 +150,9 @@
             frm.set_value("confirm_all", 0);
           }
         );
-        confirmDialog.set_title("Confirmar");
-        confirmDialog.set_primary_action("Sim, tenho certeza.");
-        confirmDialog.set_secondary_action_label("N\xE3o, ainda estou editando.");
+        confirmDialog.set_title("Confirm");
+        confirmDialog.set_primary_action("Yes, I'm sure.");
+        confirmDialog.set_secondary_action_label("No, I'm still editing.");
       }
     },
     cust_taxid_type(frm) {
@@ -152,14 +164,14 @@
       }
       const hasFilled = (frm.doc.cust_attachs || []).some((row) => row.attach);
       if (hasFilled) {
-        frappe.show_alert({ message: "Documentos j\xE1 inseridos \u2014 altera\xE7\xF5es ignoradas.", indicator: "blue" }, 5);
+        frappe.show_alert({ message: "Documents already inserted \u2014 changes ignored.", indicator: "blue" }, 5);
         return;
       }
       frm.doc.cust_attachs = [];
       frm.refresh_field("cust_attachs");
-      const docType = type === "Pessoa F\xEDsica" ? "RG" : "Contrato Social";
+      const docType = type === "Individual" ? "RG" : "Contrato Social";
       frm.add_child("cust_attachs", { attach_type: docType });
-      frappe.show_alert({ message: "Insira os documentos necess\xE1rios para o instalador.", indicator: "yellow" }, 10);
+      frappe.show_alert({ message: "Please insert the required documents for the installer.", indicator: "yellow" }, 10);
       frappe.utils.play_sound("alert");
       frm.refresh_field("cust_attachs");
     },
@@ -172,14 +184,14 @@
       }
       const hasFilled = (frm.doc.inst_attachs || []).some((row) => row.attach);
       if (hasFilled) {
-        frappe.show_alert({ message: "Documentos j\xE1 inseridos \u2014 altera\xE7\xF5es ignoradas.", indicator: "blue" }, 5);
+        frappe.show_alert({ message: "Documents already inserted \u2014 changes ignored.", indicator: "blue" }, 5);
         return;
       }
       frm.doc.inst_attachs = [];
       frm.refresh_field("inst_attachs");
-      const docType = type === "Pessoa F\xEDsica" ? "RG" : "Contrato Social";
+      const docType = type === "Individual" ? "RG" : "Contrato Social";
       frm.add_child("inst_attachs", { attach_type: docType });
-      frappe.show_alert({ message: "Insira os documentos necess\xE1rios para o instalador.", indicator: "yellow" }, 10);
+      frappe.show_alert({ message: "Please insert the required documents for the installer.", indicator: "yellow" }, 10);
       frappe.utils.play_sound("alert");
       frm.refresh_field("inst_attachs");
     },
@@ -197,29 +209,29 @@
           if (description && /inválido|incompleto/i.test(description)) {
             const fieldLabel = field?.df?.label || pair.doc;
             frappe.msgprint({
-              title: __("Documento Inv\xE1lido"),
-              message: __(`Documento inv\xE1lido no campo ${fieldLabel}. Favor corrigir antes de salvar.`),
+              title: __("Invalid Document"),
+              message: __(`Invalid document in field ${fieldLabel}. Please correct before saving.`),
               indicator: "red"
             });
             allValid = false;
-            console.warn(`Valida\xE7\xE3o falhou para o campo ${pair.doc}: ${description}`);
+            console.warn(`Validation failed for field ${pair.doc}: ${description}`);
           }
         } catch (e) {
-          console.error(`Erro ao verificar campo ${pair.doc}:`, e);
+          console.error(`Error checking field ${pair.doc}:`, e);
           allValid = false;
         }
       });
-      if (frm.doc.cust_taxid_type && (frm.doc.cust_taxid_type === "Pessoa F\xEDsica" || frm.doc.cust_taxid_type === "Pessoa Jur\xEDdica") && !isAttached(frm, "cust_attachs", ["attach_type", "attach"])) {
-        frappe.msgprint(__("Adicione todos os anexos do cliente antes de continuar."));
+      if (frm.doc.cust_taxid_type && (frm.doc.cust_taxid_type === "Individual" || frm.doc.cust_taxid_type === "Legal Entity") && !isAttached(frm, "cust_attachs", ["attach_type", "attach"])) {
+        frappe.msgprint(__("Add all customer attachments before continuing."));
         allValid = false;
       }
-      if (frm.doc.inst_taxid_type && (frm.doc.inst_taxid_type === "Pessoa F\xEDsica" || frm.doc.inst_taxid_type === "Pessoa Jur\xEDdica") && !isAttached(frm, "inst_attachs", ["attach_type", "attach"])) {
-        frappe.msgprint(__("Adicione todos os anexos do instalador antes de continuar."));
+      if (frm.doc.inst_taxid_type && (frm.doc.inst_taxid_type === "Individual" || frm.doc.inst_taxid_type === "Legal Entity") && !isAttached(frm, "inst_attachs", ["attach_type", "attach"])) {
+        frappe.msgprint(__("Add all installer attachments before continuing."));
         allValid = false;
       }
       if (!allValid) {
         frappe.validated = false;
-        frappe.throw(__("Corrija os erros antes de salvar"));
+        frappe.throw(__("Fix the errors before saving"));
         return false;
       }
       return true;
@@ -234,12 +246,7 @@
   }
   function fields_handler(frm) {
     const showRefFields = [
-      "ref_naming_series",
-      "main_customer_email",
-      "main_customer_name",
-      "main_eqp_model",
-      "main_eqp_serial_no",
-      "distributor"
+      "ref_naming_series"
     ];
     showRefFields.forEach((f) => {
       const has = !!frm.doc[f];
@@ -247,15 +254,11 @@
       frm.set_df_property(f, "read_only", has ? 1 : 0);
     });
     const showAgreement = [
-      "ticket_docname",
-      "main_customer_email",
-      "main_customer_name",
-      "main_eqp_model",
-      "main_eqp_serial_no",
-      "distributor"
+      "ticket_docname"
     ].every((field) => frm.doc[field]);
     frm.set_df_property("section_agreement", "hidden", showAgreement ? 0 : 1);
     const customerTypeFields = [
+      "button_terms_and_conditions",
       "section_cust_agreement",
       "section_cust_attachs",
       "section_inst_agreement",
@@ -263,44 +266,49 @@
       "cust_taxid_type",
       "cust_name",
       "cust_taxid",
-      "cust_signature",
+      // 'cust_signature', // Do not hide signature
       "inst_taxid_type",
       "inst_name",
-      "inst_taxid",
-      "inst_signature"
+      "inst_taxid"
+      // 'inst_signature', // Do not hide signature
     ];
     customerTypeFields.forEach((field) => frm.set_df_property(field, "hidden", frm.doc.check_agreement ? 0 : 1));
+    frm.set_df_property("cust_signature", "hidden", 1);
+    frm.set_df_property("inst_signature", "hidden", 1);
     const customerFields = [
       "cust_name",
       "cust_taxid",
-      "cust_signature",
       "section_cust_attachs"
+      // 'cust_signature', // Do not hide signature
     ];
     customerFields.forEach((field) => frm.set_df_property(field, "hidden", frm.doc.cust_taxid_type ? 0 : 1));
+    frm.set_df_property("cust_signature", "hidden", 0);
     const installerFields = [
       "inst_name",
       "inst_taxid",
-      "inst_signature",
       "section_inst_attachs"
+      // 'inst_signature', // Do not hide signature
     ];
     installerFields.forEach((field) => frm.set_df_property(field, "hidden", frm.doc.inst_taxid_type ? 0 : 1));
+    frm.set_df_property("inst_signature", "hidden", 0);
     const showFiscalSection = [
       "cust_taxid_type",
       "cust_taxid",
       "cust_name",
-      "cust_signature",
-      "inst_taxid_type",
-      "inst_taxid",
-      "inst_name",
-      "inst_signature"
+      "cust_signature"
+      // We disabled the obligation to fill the installer signature
+      // 'inst_taxid_type',
+      // 'inst_taxid',
+      // 'inst_name',
+      // 'inst_signature',
     ].every((field) => frm.doc[field]);
     frm.set_df_property("section_fiscal", "hidden", showFiscalSection && isAttached(frm, "cust_attachs", ["attach_type", "attach"]) && isAttached(frm, "inst_attachs", ["attach_type", "attach"]) ? 0 : 1);
     frm.set_df_property("section_delivery", "hidden", showFiscalSection && isAttached(frm, "cust_attachs", ["attach_type", "attach"]) && isAttached(frm, "inst_attachs", ["attach_type", "attach"]) ? 0 : 1);
-    frm.set_df_property("section_pickup", "hidden", frm.doc.delivery_allow_pickup === "Sim" ? 0 : 1);
+    frm.set_df_property("section_pickup", "hidden", frm.doc.delivery_allow_pickup === "Yes" ? 0 : 1);
     let showConfirmAll = false;
     if (frm.doc.delivery_allow_pickup === "") {
       showConfirmAll = false;
-    } else if (frm.doc.delivery_allow_pickup === "N\xE3o") {
+    } else if (frm.doc.delivery_allow_pickup === "No") {
       showConfirmAll = [
         "delivery_taxid_type",
         "delivery_name",
@@ -313,7 +321,7 @@
         "delivery_city",
         "delivery_phone"
       ].every((field) => frm.doc[field]);
-    } else if (frm.doc.delivery_allow_pickup === "Sim") {
+    } else if (frm.doc.delivery_allow_pickup === "Yes") {
       showConfirmAll = [
         "delivery_taxid_type",
         "delivery_name",
@@ -346,22 +354,24 @@
     frm.set_df_property("check_agreement", "read_only", frm.doc.check_agreement ? 1 : 0);
     frm.set_df_property("cust_signature", "read_only", frm.doc.confirm_all ? 1 : 0);
     frm.set_df_property("inst_signature", "read_only", frm.doc.confirm_all ? 1 : 0);
-    const isAdvancedWorkflow = frm.doc.workflow_state === agt.metadata.doctype.compliance_statement.workflow_state.growatt_preliminary_assessment.name;
+    const isAdvancedWorkflow = frm.doc.workflow_state === agt.metadata.doctype.compliance_statement.workflow_state.finished.name;
     if (isAdvancedWorkflow && !frm.doc.confirm_all) {
       frm.set_value("confirm_all", 1);
     }
+    frm.set_df_property("button_terms_and_conditions", "hidden", isAdvancedWorkflow ? 1 : 0);
     frm.set_df_property("confirm_all", "read_only", frm.doc.confirm_all && isAdvancedWorkflow ? 1 : 0);
   }
   function load_terms(frm) {
     if (typeof agt !== "undefined" && agt.utils.form.field.is_empty(frm.doc.terms_and_conditions)) {
-      frappe.db.get_value("Terms and Conditions", "Termo Dentro de Garantia", "terms", (r) => {
+      frappe.db.get_value("Terms and Conditions", "Term 4.1", "terms", (r) => {
         if (r?.terms) {
           frm.set_value("terms_and_conditions", r.terms);
-          agt.utils.dialog.show_debugger_alert(frm, "Termo carregado.", "green", 5);
+          agt.utils.dialog.show_debugger_alert(frm, "Terms loaded.", "green", 5);
         } else {
-          agt.utils.dialog.show_debugger_alert(frm, "Termo n\xE3o encontrado.", "red", 5);
+          agt.utils.dialog.show_debugger_alert(frm, "Terms not found.", "red", 5);
         }
         frm.set_df_property("terms_and_conditions", "read_only", 1);
+        frm.set_df_property("terms_and_conditions", "hidden", 1);
         frm.refresh_field("terms_and_conditions");
       });
     }
@@ -378,7 +388,7 @@
               try {
                 agt.utils.document_id(frm, pair.doc, pair.type || void 0);
               } catch (e) {
-                console.log(`Erro ao processar campo ${pair.doc}:`, e);
+                console.log(`Error processing field ${pair.doc}:`, e);
               }
             }
           });

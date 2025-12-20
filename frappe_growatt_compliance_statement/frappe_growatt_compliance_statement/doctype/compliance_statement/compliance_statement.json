@@ -1,0 +1,474 @@
+{
+    "actions": [],
+    "allow_rename": 1,
+    "creation": "2025-11-11 17:31:04.889462",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "tab_public",
+        "section_ref_cust",
+        "naming_series",
+        "ticket_docname",
+        "section_agreement",
+        "column_break_zgkf",
+        "terms_and_conditions",
+        "button_terms_and_conditions",
+        "check_agreement",
+        "section_cust_agreement",
+        "cust_taxid_type",
+        "cust_name",
+        "cust_taxid",
+        "column_break_zsep",
+        "cust_signature",
+        "section_cust_attachs",
+        "cust_attachs",
+        "section_inst_agreement",
+        "inst_taxid_type",
+        "inst_name",
+        "inst_taxid",
+        "column_break_hgkq",
+        "inst_signature",
+        "section_inst_attachs",
+        "inst_attachs",
+        "section_fiscal",
+        "fiscal_taxid",
+        "fiscal_nf_uf",
+        "fiscal_icms_taxpayer",
+        "section_delivery",
+        "delivery_taxid_type",
+        "delivery_name",
+        "delivery_taxid",
+        "column_break_wrig",
+        "delivery_cep",
+        "delivery_address",
+        "delivery_n",
+        "delivery_obs",
+        "column_break_ufsk",
+        "delivery_hood",
+        "delivery_city",
+        "delivery_uf",
+        "column_break_fkgl",
+        "delivery_phone_alt",
+        "delivery_phone",
+        "delivery_allow_pickup",
+        "section_pickup",
+        "pickup_taxid_type",
+        "pickup_name",
+        "pickup_taxid",
+        "column_break_kwhu",
+        "pickup_cep",
+        "pickup_address",
+        "pickup_n",
+        "pickup_obs",
+        "column_break_xoie",
+        "pickup_hood",
+        "pickup_city",
+        "pickup_uf",
+        "column_break_qite",
+        "pickup_phone",
+        "pickup_phone_alt",
+        "section_confirm_all",
+        "confirm_all",
+        "tab_private",
+        "amended_from",
+        "corrections_tracker"
+    ],
+    "fields": [
+        {
+            "fieldname": "tab_public",
+            "fieldtype": "Tab Break",
+            "label": "Public"
+        },
+        {
+            "default": "COMPST-.MM.YY.-.####",
+            "fieldname": "naming_series",
+            "fieldtype": "Select",
+            "hidden": 1,
+            "label": "Series",
+            "options": "COMPST-.MM.YY.-.####",
+            "reqd": 1
+        },
+        {
+            "fieldname": "info_card",
+            "fieldtype": "HTML",
+            "label": "Info Card",
+            "read_only": 1
+        },
+        {
+            "fieldname": "section_ref_cust",
+            "fieldtype": "Section Break",
+            "label": "Informatory Data"
+        },
+        {
+            "fieldname": "ticket_docname",
+            "fieldtype": "Link",
+            "label": "Referenced Protocol",
+            "options": "Ticket",
+            "read_only": 1,
+            "hidden": 1
+        },
+        {
+            "fieldname": "section_agreement",
+            "fieldtype": "Section Break",
+            "label": "Service Agreement"
+        },
+        {
+            "fieldname": "column_break_zgkf",
+            "fieldtype": "Column Break"
+        },
+        {
+            "allow_on_submit": 1,
+            "fieldname": "terms_and_conditions",
+            "fieldtype": "Text Editor",
+            "label": "Termos e Condi\u00e7\u00f5es",
+            "read_only": 1,
+            "hidden": 1
+        },
+        {
+            "fieldname": "button_terms_and_conditions",
+            "fieldtype": "Button",
+            "label": "Download Terms and Conditions"
+        },
+        {
+            "default": "0",
+            "fieldname": "check_agreement",
+            "fieldtype": "Check",
+            "label": "I have read, signed and agree with the terms and conditions above"
+        },
+        {
+            "fieldname": "section_cust_agreement",
+            "fieldtype": "Section Break",
+            "label": "Customer Data"
+        },
+        {
+            "fieldname": "cust_taxid_type",
+            "fieldtype": "Select",
+            "label": "Person Type",
+            "options": "\nIndividual\nLegal Entity"
+        },
+        {
+            "fieldname": "cust_name",
+            "fieldtype": "Data",
+            "label": "Name/Corporate Name"
+        },
+        {
+            "fieldname": "cust_taxid",
+            "fieldtype": "Data",
+            "label": "CPF/CNPJ"
+        },
+        {
+            "fieldname": "column_break_zsep",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "cust_signature",
+            "fieldtype": "Signature",
+            "label": "Customer Signature"
+        },
+        {
+            "fieldname": "section_cust_attachs",
+            "fieldtype": "Section Break",
+            "label": "Customer Attachments"
+        },
+        {
+            "fieldname": "cust_attachs",
+            "fieldtype": "Table",
+            "options": "Attachments Table"
+        },
+        {
+            "fieldname": "section_inst_agreement",
+            "fieldtype": "Section Break",
+            "label": "Installer Data"
+        },
+        {
+            "fieldname": "inst_taxid_type",
+            "fieldtype": "Select",
+            "label": "Person Type",
+            "options": "\nIndividual\nLegal Entity"
+        },
+        {
+            "fieldname": "inst_name",
+            "fieldtype": "Data",
+            "label": "Name/Corporate Name"
+        },
+        {
+            "fieldname": "inst_taxid",
+            "fieldtype": "Data",
+            "label": "CPF/CNPJ"
+        },
+        {
+            "fieldname": "column_break_hgkq",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "inst_signature",
+            "fieldtype": "Signature",
+            "label": "Installer Signature"
+        },
+        {
+            "fieldname": "section_inst_attachs",
+            "fieldtype": "Section Break",
+            "label": "Installer Attachments"
+        },
+        {
+            "fieldname": "inst_attachs",
+            "fieldtype": "Table",
+            "options": "Attachments Table"
+        },
+        {
+            "fieldname": "section_fiscal",
+            "fieldtype": "Section Break",
+            "label": "Fiscal Data"
+        },
+        {
+            "fieldname": "fiscal_taxid",
+            "fieldtype": "Data",
+            "label": "CPF/CNPJ"
+        },
+        {
+            "fieldname": "fiscal_nf_uf",
+            "fieldtype": "Link",
+            "label": "Invoice State UF",
+            "options": "UF"
+        },
+        {
+            "default": "0",
+            "fieldname": "fiscal_icms_taxpayer",
+            "fieldtype": "Check",
+            "label": "ICMS Taxpayer?"
+        },
+        {
+            "fieldname": "section_delivery",
+            "fieldtype": "Section Break",
+            "label": "Delivery Data"
+        },
+        {
+            "default": "Individual",
+            "fieldname": "delivery_taxid_type",
+            "fieldtype": "Select",
+            "label": "Person Type",
+            "no_copy": 1,
+            "options": "Individual",
+            "set_only_once": 1
+        },
+        {
+            "fieldname": "delivery_name",
+            "fieldtype": "Data",
+            "label": "Responsible"
+        },
+        {
+            "fieldname": "delivery_taxid",
+            "fieldtype": "Data",
+            "label": "CPF"
+        },
+        {
+            "fieldname": "column_break_wrig",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "delivery_cep",
+            "fieldtype": "Data",
+            "label": "CEP"
+        },
+        {
+            "fieldname": "delivery_address",
+            "fieldtype": "Data",
+            "label": "Address"
+        },
+        {
+            "fieldname": "delivery_n",
+            "fieldtype": "Data",
+            "label": "Number"
+        },
+        {
+            "fieldname": "delivery_obs",
+            "fieldtype": "Data",
+            "label": "Complement"
+        },
+        {
+            "fieldname": "column_break_ufsk",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "delivery_hood",
+            "fieldtype": "Data",
+            "label": "Neighborhood"
+        },
+        {
+            "fieldname": "delivery_city",
+            "fieldtype": "Data",
+            "label": "City"
+        },
+        {
+            "fieldname": "delivery_uf",
+            "fieldtype": "Link",
+            "label": "State",
+            "options": "UF"
+        },
+        {
+            "fieldname": "column_break_fkgl",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "delivery_phone_alt",
+            "fieldtype": "Data",
+            "label": "Alternative Contact"
+        },
+        {
+            "fieldname": "delivery_phone",
+            "fieldtype": "Data",
+            "label": "Contact"
+        },
+        {
+            "description": "<span style=\"color:red;\">This option cannot be undone after the invoice is created</span>",
+            "fieldname": "delivery_allow_pickup",
+            "fieldtype": "Select",
+            "label": "Collect at a different address?",
+            "options": "\nYes\nNo"
+        },
+        {
+            "fieldname": "section_pickup",
+            "fieldtype": "Section Break",
+            "label": "Pickup Data"
+        },
+        {
+            "default": "Individual",
+            "fieldname": "pickup_taxid_type",
+            "fieldtype": "Select",
+            "label": "Person Type",
+            "no_copy": 1,
+            "options": "Individual",
+            "set_only_once": 1
+        },
+        {
+            "fieldname": "pickup_name",
+            "fieldtype": "Data",
+            "label": "Responsible"
+        },
+        {
+            "fieldname": "pickup_taxid",
+            "fieldtype": "Data",
+            "label": "CPF"
+        },
+        {
+            "fieldname": "column_break_kwhu",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "pickup_cep",
+            "fieldtype": "Data",
+            "label": "CEP"
+        },
+        {
+            "fieldname": "pickup_address",
+            "fieldtype": "Data",
+            "label": "Address"
+        },
+        {
+            "fieldname": "pickup_n",
+            "fieldtype": "Data",
+            "label": "Number"
+        },
+        {
+            "fieldname": "pickup_obs",
+            "fieldtype": "Data",
+            "label": "Complement"
+        },
+        {
+            "fieldname": "column_break_xoie",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "pickup_hood",
+            "fieldtype": "Data",
+            "label": "Neighborhood"
+        },
+        {
+            "fieldname": "pickup_city",
+            "fieldtype": "Data",
+            "label": "City"
+        },
+        {
+            "fieldname": "pickup_uf",
+            "fieldtype": "Link",
+            "label": "State",
+            "options": "UF"
+        },
+        {
+            "fieldname": "column_break_qite",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "Brazil (+55)",
+            "fieldname": "pickup_phone",
+            "fieldtype": "Data",
+            "label": "Contact"
+        },
+        {
+            "default": "+55",
+            "fieldname": "pickup_phone_alt",
+            "fieldtype": "Data",
+            "label": "Alternative Contact"
+        },
+        {
+            "fieldname": "section_confirm_all",
+            "fieldtype": "Section Break",
+            "label": "Validation"
+        },
+        {
+            "default": "0",
+            "description": "<span style=\"color:red;\">This option cannot be undone after the invoice is created</span>",
+            "fieldname": "confirm_all",
+            "fieldtype": "Check",
+            "label": "Confirms that all information is correct?"
+        },
+        {
+            "fieldname": "tab_private",
+            "fieldtype": "Tab Break",
+            "label": "Private"
+        },
+        {
+            "fieldname": "amended_from",
+            "fieldtype": "Link",
+            "label": "Amended From",
+            "no_copy": 1,
+            "options": "Compliance Statement",
+            "print_hide": 1,
+            "read_only": 1,
+            "search_index": 1
+        },
+        {
+            "fieldname": "corrections_tracker",
+            "fieldtype": "Table",
+            "label": "Correction Requests",
+            "options": "Corrections Tracker"
+        }
+    ],
+    "grid_page_length": 50,
+    "index_web_pages_for_search": 1,
+    "links": [],
+    "modified": "2025-12-18 20:46:25.112702",
+    "modified_by": "Administrator",
+    "module": "Frappe Growatt Compliance Statement",
+    "name": "Compliance Statement",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "row_format": "Dynamic",
+    "rows_threshold_for_grid_search": 20,
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
+}
