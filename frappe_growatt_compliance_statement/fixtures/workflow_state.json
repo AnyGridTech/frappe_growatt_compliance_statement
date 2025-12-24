@@ -1,0 +1,42 @@
+[
+    {
+        "docstatus": 0,
+        "doctype": "Workflow State",
+        "name": "Awaiting Action",
+        "workflow_state_name": "Awaiting Action",
+        "style": "",
+        "icon": ""
+    },
+    {
+        "docstatus": 0,
+        "doctype": "Workflow State",
+        "name": "Revision",
+        "workflow_state_name": "Revision",
+        "style": "",
+        "icon": ""
+    },
+    {
+        "docstatus": 0,
+        "doctype": "Workflow State",
+        "name": "Finished",
+        "workflow_state_name": "Finished",
+        "style": "",
+        "icon": ""
+    },
+    {
+        "docstatus": 0,
+        "doctype": "Workflow State",
+        "name": "Rejected",
+        "workflow_state_name": "Rejected",
+        "style": "",
+        "icon": ""
+    },
+    {
+        "docstatus": 0,
+        "doctype": "Workflow State",
+        "name": "Cancelled",
+        "workflow_state_name": "Cancelled",
+        "style": "",
+        "icon": ""
+    }
+]
