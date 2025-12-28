@@ -24,6 +24,7 @@
   "section_cust_attachs",
   "cust_attachs",
   "section_inst_agreement",
+  "check_allow_installer",
   "inst_taxid_type",
   "inst_name",
   "inst_taxid",
@@ -181,6 +182,12 @@
    "fieldname": "section_inst_agreement",
    "fieldtype": "Section Break",
    "label": "Installer Data"
+  },
+  {
+   "default": "0",
+   "fieldname": "check_allow_installer",
+   "fieldtype": "Check",
+   "label": "Is there an installer responsible for the installation?"
   },
   {
    "fieldname": "inst_taxid_type",

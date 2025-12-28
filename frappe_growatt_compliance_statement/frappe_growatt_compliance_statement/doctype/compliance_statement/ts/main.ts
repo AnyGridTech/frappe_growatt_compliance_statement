@@ -15,11 +15,11 @@ frappe.ui.form.on(cur_frm.doc.doctype, 'setup', async () => {
 });
 
 const docPairs = [
-    { doc: 'pickup_taxid', type: 'pickup_taxid_type' },
-    { doc: 'delivery_taxid', type: 'delivery_taxid_type' },
-    { doc: 'cust_taxid', type: 'cust_taxid_type' },
-    { doc: 'inst_taxid', type: 'inst_taxid_type' },
-    { doc: 'fiscal_taxid', type: '' }
+    { doc: 'pickup_taxid', type: 'pickup_taxid_type', name: 'pickup_name' },
+    { doc: 'delivery_taxid', type: 'delivery_taxid_type', name: 'delivery_name' },
+    { doc: 'cust_taxid', type: 'cust_taxid_type', name: 'cust_name' },
+    { doc: 'inst_taxid', type: 'inst_taxid_type', name: 'inst_name' },
+    { doc: 'fiscal_taxid', type: '', name: '' }
 ];
 
 // // Array with the names of phone fields that will receive automatic DDI
@@ -62,7 +62,7 @@ frappe.ui.form.on('Compliance Statement', {
         read_only_handler(frm);
 
         docPairs.forEach(pair => {
-            agt.utils.document_id(frm, pair.doc, pair.type || undefined);
+            agt.utils.document_id(frm, pair.doc, pair.type || undefined, pair.name || undefined);
         });
     },
 
@@ -316,6 +316,21 @@ function setItemDetails(frm: FrappeForm, eqp_model: string): void {
     });
 }
 
+function setNameLabel(frm: FrappeForm, nameField: string, typeField: string) {
+    const type = (frm.doc[typeField as keyof FrappeDoc] as string) || '';
+    let label = 'Name';
+    if (type === 'Individual') {
+        label = 'Individual Name';
+    } else if (type === 'Legal Entity') {
+        label = 'Legal Entity Name';
+    }
+    try {
+        frm.set_df_property(nameField, 'label', label);
+    } catch (e) {
+        console.warn(`Could not set label for ${nameField}:`, e);
+    }
+}
+
 function fields_handler(frm: FrappeForm<ComplianceStatement>) {
 
     /* ===========================================================
@@ -350,74 +365,98 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
     const customerTypeFields = [
         'button_terms_and_conditions',
         'section_cust_agreement',
-        'section_cust_attachs',
-        'section_inst_agreement',
-        'section_inst_attachs',
         'cust_taxid_type',
         'cust_name',
         'cust_taxid',
-        // 'cust_signature', // Do not hide signature
+        'section_cust_attachs',
+        'section_inst_agreement',
+        'check_allow_installer',
         'inst_taxid_type',
         'inst_name',
         'inst_taxid',
-        // 'inst_signature', // Do not hide signature
+        'section_inst_attachs',
     ];
     customerTypeFields.forEach(field => frm.set_df_property(field, 'hidden', frm.doc.check_agreement ? 0 : 1));
 
-    // // Signatures always visible
-    // frm.set_df_property('cust_signature', 'hidden', 0);
-    // frm.set_df_property('inst_signature', 'hidden', 0);
-    // We had to hide the signatures because it is obsolete (don't remove it)
+    // Hide signatures
     frm.set_df_property('cust_signature', 'hidden', 1);
     frm.set_df_property('inst_signature', 'hidden', 1);
 
     const customerFields = [
         'cust_name',
         'cust_taxid',
-        'section_cust_attachs',
-        // 'cust_signature', // Do not hide signature
+        'section_cust_attachs'
     ];
     customerFields.forEach(field => frm.set_df_property(field, 'hidden', frm.doc.cust_taxid_type ? 0 : 1));
-    frm.set_df_property('cust_signature', 'hidden', 0);
 
     /* ===========================================================
      * ===> Installer's Data Section
      * ===========================================================
      */
 
+    frm.set_df_property('inst_taxid_type', 'hidden', (frm.doc.check_allow_installer ? 0 : 1));
+
     const installerFields = [
         'inst_name',
         'inst_taxid',
-        'section_inst_attachs',
-        // 'inst_signature', // Do not hide signature
+        'section_inst_attachs'
     ];
     installerFields.forEach(field => frm.set_df_property(field, 'hidden', frm.doc.inst_taxid_type ? 0 : 1));
-    frm.set_df_property('inst_signature', 'hidden', 0);
+
+    // Atualiza os labels dos campos *_name conforme o tipo selecionado
+    setNameLabel(frm, 'cust_name', 'cust_taxid_type');
+    setNameLabel(frm, 'inst_name', 'inst_taxid_type');
+    setNameLabel(frm, 'delivery_name', 'delivery_taxid_type');
+    setNameLabel(frm, 'pickup_name', 'pickup_taxid_type');
 
     /* ===========================================================
      * ===> Fiscal Section
      * ===========================================================
      */
 
-    const showFiscalSection = [
-        'cust_taxid_type',
-        'cust_taxid',
-        'cust_name',
-        'cust_signature',
-        // We disabled the obligation to fill the installer signature
-        // 'inst_taxid_type',
-        // 'inst_taxid',
-        // 'inst_name',
-        // 'inst_signature',
-    ].every((field) => frm.doc[field]);
-    frm.set_df_property('section_fiscal', 'hidden', (showFiscalSection && isAttached(frm, 'cust_attachs', ['attach_type', 'attach']) && isAttached(frm, 'inst_attachs', ['attach_type', 'attach'])) ? 0 : 1);
+    // const showFiscalSection = [
+    //     'cust_taxid_type',
+    //     'cust_taxid',
+    //     'cust_name',
+    //     // We disabled the obligation to fill the installer signature
+    //     // 'inst_taxid_type',
+    //     // 'inst_taxid',
+    //     // 'inst_name',
+    // ].every((field) => frm.doc[field]);
+    // frm.set_df_property('section_fiscal', 'hidden', (showFiscalSection && isAttached(frm, 'cust_attachs', ['attach_type', 'attach']) && isAttached(frm, 'inst_attachs', ['attach_type', 'attach'])) ? 0 : 1);
+
+    // Determine whether the fiscal section should be shown.
+    let showFiscalSection: boolean;
+    let hasFiscalAttachments: boolean;
+
+    if (frm.doc.check_allow_installer === false) {
+        showFiscalSection = [
+            'cust_taxid_type',
+            'cust_taxid',
+            'cust_name'
+        ].every((field) => frm.doc[field]);
+        hasFiscalAttachments = isAttached(frm, 'cust_attachs', ['attach_type', 'attach']);
+        frm.set_df_property('section_fiscal', 'hidden', (showFiscalSection && hasFiscalAttachments) ? 0 : 1);
+    } else {
+        showFiscalSection = [
+            'cust_taxid_type',
+            'cust_taxid',
+            'cust_name',
+            'inst_taxid_type',
+            'inst_taxid',
+            'inst_name',
+        ].every((field) => frm.doc[field]);
+        hasFiscalAttachments = isAttached(frm, 'cust_attachs', ['attach_type', 'attach']) && isAttached(frm, 'inst_attachs', ['attach_type', 'attach']);
+        frm.set_df_property('section_fiscal', 'hidden', (showFiscalSection && hasFiscalAttachments) ? 0 : 1);
+    }
 
     /* ===========================================================
      * ===> Delivery Section
      * ===========================================================
      */
 
-    frm.set_df_property('section_delivery', 'hidden', (showFiscalSection && isAttached(frm, 'cust_attachs', ['attach_type', 'attach']) && isAttached(frm, 'inst_attachs', ['attach_type', 'attach'])) ? 0 : 1);
+    // Use the computed fiscalAttached flag to decide delivery section visibility
+    frm.set_df_property('section_delivery', 'hidden', (showFiscalSection && hasFiscalAttachments) ? 0 : 1);
 
 
     /* ===========================================================
@@ -527,7 +566,7 @@ function fields_listener(frm: FrappeForm<ComplianceStatement>) {
                         frm.fields_dict[pair.doc] !== null &&
                         frm.fields_dict[pair.doc]?.$input !== undefined) {
                         try {
-                            agt.utils.document_id(frm, pair.doc, pair.type || undefined);
+                            agt.utils.document_id(frm, pair.doc, pair.type || undefined, pair.name || undefined);
                         } catch (e) {
                             console.log(`Error processing field ${pair.doc}:`, e);
                         }
