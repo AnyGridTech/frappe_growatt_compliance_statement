@@ -2,6 +2,7 @@
   {
     "docstatus": 0,
     "doctype": "Workflow",
+    "workflow_name": "Compliance Statement",
     "document_type": "Compliance Statement",
     "is_active": 1,
     "name": "Compliance Statement",
