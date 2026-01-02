@@ -307,7 +307,7 @@
     setNameLabel(frm, "pickup_name", "pickup_taxid_type");
     let showFiscalSection;
     let hasFiscalAttachments;
-    if (frm.doc.check_allow_installer === false) {
+    if (!frm.doc.check_allow_installer) {
       showFiscalSection = [
         "cust_taxid_type",
         "cust_taxid",

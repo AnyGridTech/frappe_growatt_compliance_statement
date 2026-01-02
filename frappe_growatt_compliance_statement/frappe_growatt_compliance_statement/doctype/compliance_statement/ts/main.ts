@@ -429,7 +429,7 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
     let showFiscalSection: boolean;
     let hasFiscalAttachments: boolean;
 
-    if (frm.doc.check_allow_installer === false) {
+    if (!frm.doc.check_allow_installer) {
         showFiscalSection = [
             'cust_taxid_type',
             'cust_taxid',
