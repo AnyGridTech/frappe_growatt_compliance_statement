@@ -370,7 +370,7 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
         'cust_taxid',
         'section_cust_attachs',
         'section_inst_agreement',
-        'check_allow_installer',
+        'allow_installer',
         'inst_taxid_type',
         'inst_name',
         'inst_taxid',
@@ -394,7 +394,7 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
      * ===========================================================
      */
 
-    frm.set_df_property('inst_taxid_type', 'hidden', (frm.doc.check_allow_installer ? 0 : 1));
+    frm.set_df_property('inst_taxid_type', 'hidden', (frm.doc.allow_installer === "Yes" ? 0 : 1));
 
     const installerFields = [
         'inst_name',
@@ -429,7 +429,7 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
     let showFiscalSection: boolean;
     let hasFiscalAttachments: boolean;
 
-    if (!frm.doc.check_allow_installer) {
+    if (frm.doc.allow_installer === "No") {
         showFiscalSection = [
             'cust_taxid_type',
             'cust_taxid',
@@ -437,7 +437,7 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
         ].every((field) => frm.doc[field]);
         hasFiscalAttachments = isAttached(frm, 'cust_attachs', ['attach_type', 'attach']);
         frm.set_df_property('section_fiscal', 'hidden', (showFiscalSection && hasFiscalAttachments) ? 0 : 1);
-    } else {
+    } else if (frm.doc.allow_installer === "Yes") {
         showFiscalSection = [
             'cust_taxid_type',
             'cust_taxid',
@@ -448,6 +448,10 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
         ].every((field) => frm.doc[field]);
         hasFiscalAttachments = isAttached(frm, 'cust_attachs', ['attach_type', 'attach']) && isAttached(frm, 'inst_attachs', ['attach_type', 'attach']);
         frm.set_df_property('section_fiscal', 'hidden', (showFiscalSection && hasFiscalAttachments) ? 0 : 1);
+    } else {
+        showFiscalSection = false;
+        hasFiscalAttachments = false;
+        frm.set_df_property('section_fiscal', 'hidden', 1);
     }
 
     /* ===========================================================
@@ -457,7 +461,6 @@ function fields_handler(frm: FrappeForm<ComplianceStatement>) {
 
     // Use the computed fiscalAttached flag to decide delivery section visibility
     frm.set_df_property('section_delivery', 'hidden', (showFiscalSection && hasFiscalAttachments) ? 0 : 1);
-
 
     /* ===========================================================
      * ===> Pickup Section
