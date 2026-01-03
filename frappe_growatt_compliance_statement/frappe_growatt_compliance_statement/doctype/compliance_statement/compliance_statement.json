@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "tab_public",
+  "info_card",
   "section_ref_cust",
   "naming_series",
   "ticket_docname",
@@ -73,8 +74,7 @@
   "confirm_all",
   "tab_private",
   "amended_from",
-  "corrections_tracker",
-  "info_card"
+  "corrections_tracker"
  ],
  "fields": [
   {
@@ -83,12 +83,12 @@
    "label": "Public"
   },
   {
-   "default": "COMPST-.MM.YY.-.####",
+   "default": "COMPST-.DD.MM.YY.-.####",
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "hidden": 1,
    "label": "Series",
-   "options": "COMPST-.MM.YY.-.####",
+   "options": "COMPST-.DD.MM.YY.-.####",
    "reqd": 1
   },
   {
@@ -184,10 +184,10 @@
    "label": "Installer Data"
   },
   {
-   "default": "0",
-   "fieldname": "check_allow_installer",
-   "fieldtype": "Check",
-   "label": "Is there an installer responsible for the installation?"
+   "fieldname": "allow_installer",
+   "fieldtype": "Select",
+   "label": "Is there an installer responsible for the installation?",
+   "options": "\nYes\nNo"
   },
   {
    "fieldname": "inst_taxid_type",
