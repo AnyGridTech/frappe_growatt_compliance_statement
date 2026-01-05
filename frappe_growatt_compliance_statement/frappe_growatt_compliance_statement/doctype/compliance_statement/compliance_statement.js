@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 "use strict";
 (() => {
-  // frappe_growatt_compliance_statement/doctype/compliance_statement/ts/main.ts
+  // doctype/compliance_statement/ts/main.ts
   frappe.ui.form.on(cur_frm.doc.doctype, "setup", async () => {
     await agt.setup.run();
   });
