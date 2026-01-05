@@ -25,7 +25,7 @@
   "section_cust_attachs",
   "cust_attachs",
   "section_inst_agreement",
-  "check_allow_installer",
+  "allow_installer",
   "inst_taxid_type",
   "inst_name",
   "inst_taxid",
