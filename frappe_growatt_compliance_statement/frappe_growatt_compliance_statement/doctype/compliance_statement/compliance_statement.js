@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 "use strict";
 (() => {
-  // frappe_growatt_compliance_statement/doctype/compliance_statement/ts/main.ts
+  // doctype/compliance_statement/ts/main.ts
   frappe.ui.form.on(cur_frm.doc.doctype, "setup", async () => {
     await agt.setup.run();
   });
@@ -18,11 +18,9 @@
       fields_listener(frm);
     },
     before_load(frm) {
-      load_terms(frm);
       read_only_handler(frm);
     },
     refresh(frm) {
-      load_terms(frm);
       fields_listener(frm);
       const isAdvancedWorkflow = frm.doc.workflow_state === agt.metadata.doctype.compliance_statement.workflow_state.finished.name;
       if (isAdvancedWorkflow && !frm.doc.confirm_all) {
@@ -279,7 +277,7 @@
       "cust_taxid",
       "section_cust_attachs",
       "section_inst_agreement",
-      "check_allow_installer",
+      "allow_installer",
       "inst_taxid_type",
       "inst_name",
       "inst_taxid",
@@ -294,7 +292,7 @@
       "section_cust_attachs"
     ];
     customerFields.forEach((field) => frm.set_df_property(field, "hidden", frm.doc.cust_taxid_type ? 0 : 1));
-    frm.set_df_property("inst_taxid_type", "hidden", frm.doc.check_allow_installer ? 0 : 1);
+    frm.set_df_property("inst_taxid_type", "hidden", frm.doc.allow_installer === "Yes" ? 0 : 1);
     const installerFields = [
       "inst_name",
       "inst_taxid",
@@ -307,7 +305,7 @@
     setNameLabel(frm, "pickup_name", "pickup_taxid_type");
     let showFiscalSection;
     let hasFiscalAttachments;
-    if (!frm.doc.check_allow_installer) {
+    if (frm.doc.allow_installer === "No") {
       showFiscalSection = [
         "cust_taxid_type",
         "cust_taxid",
@@ -315,7 +313,7 @@
       ].every((field) => frm.doc[field]);
       hasFiscalAttachments = isAttached(frm, "cust_attachs", ["attach_type", "attach"]);
       frm.set_df_property("section_fiscal", "hidden", showFiscalSection && hasFiscalAttachments ? 0 : 1);
-    } else {
+    } else if (frm.doc.allow_installer === "Yes") {
       showFiscalSection = [
         "cust_taxid_type",
         "cust_taxid",
@@ -326,6 +324,10 @@
       ].every((field) => frm.doc[field]);
       hasFiscalAttachments = isAttached(frm, "cust_attachs", ["attach_type", "attach"]) && isAttached(frm, "inst_attachs", ["attach_type", "attach"]);
       frm.set_df_property("section_fiscal", "hidden", showFiscalSection && hasFiscalAttachments ? 0 : 1);
+    } else {
+      showFiscalSection = false;
+      hasFiscalAttachments = false;
+      frm.set_df_property("section_fiscal", "hidden", 1);
     }
     frm.set_df_property("section_delivery", "hidden", showFiscalSection && hasFiscalAttachments ? 0 : 1);
     frm.set_df_property("section_pickup", "hidden", frm.doc.delivery_allow_pickup === "Yes" ? 0 : 1);
@@ -384,21 +386,6 @@
     }
     frm.set_df_property("button_terms_and_conditions", "hidden", isAdvancedWorkflow ? 1 : 0);
     frm.set_df_property("confirm_all", "read_only", frm.doc.confirm_all && isAdvancedWorkflow ? 1 : 0);
-  }
-  function load_terms(frm) {
-    if (typeof agt !== "undefined" && agt.utils.form.field.is_empty(frm.doc.terms_and_conditions)) {
-      frappe.db.get_value("Terms and Conditions", "Term 4.1", "terms", (r) => {
-        if (r?.terms) {
-          frm.set_value("terms_and_conditions", r.terms);
-          agt.utils.dialog.show_debugger_alert(frm, "Terms loaded.", "green", 5);
-        } else {
-          agt.utils.dialog.show_debugger_alert(frm, "Terms not found.", "red", 5);
-        }
-        frm.set_df_property("terms_and_conditions", "read_only", 1);
-        frm.set_df_property("terms_and_conditions", "hidden", 1);
-        frm.refresh_field("terms_and_conditions");
-      });
-    }
   }
   function fields_listener(frm) {
     fields_handler(frm);

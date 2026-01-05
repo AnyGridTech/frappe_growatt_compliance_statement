@@ -36,12 +36,12 @@ frappe.ui.form.on('Compliance Statement', {
     },
 
     before_load(frm: FrappeForm<ComplianceStatement>) {
-        load_terms(frm);
+        // load_terms(frm);
         read_only_handler(frm);
     },
 
     refresh(frm: FrappeForm<ComplianceStatement>) {
-        load_terms(frm);
+        // load_terms(frm);
         fields_listener(frm);
 
         // Verifica se o workflow está no estado avançado e força confirm_all = 1
@@ -538,24 +538,24 @@ function read_only_handler(frm: FrappeForm<ComplianceStatement>) {
     frm.set_df_property('confirm_all', 'read_only', (frm.doc.confirm_all && isAdvancedWorkflow) ? 1 : 0);
 }
 
-function load_terms(frm: FrappeForm<ComplianceStatement>) {
-    // Remove auto-save to avoid issues
-    if (typeof agt !== 'undefined' && agt.utils.form.field.is_empty(frm.doc.terms_and_conditions)) {
-        frappe.db.get_value('Terms and Conditions', 'Term 4.1', 'terms', (r: { terms?: string }) => {
-            if (r?.terms) {
-                frm.set_value('terms_and_conditions', r.terms);
-                agt.utils.dialog.show_debugger_alert(frm, 'Terms loaded.', 'green', 5);
-            } else {
-                agt.utils.dialog.show_debugger_alert(frm, 'Terms not found.', 'red', 5);
-            }
-            frm.set_df_property('terms_and_conditions', 'read_only', 1);
-            frm.set_df_property('terms_and_conditions', 'hidden', 1);
-            frm.refresh_field('terms_and_conditions');
-            // frm.dirty();
-            // frm.save();
-        });
-    }
-}
+// function load_terms(frm: FrappeForm<ComplianceStatement>) {
+//     // Remove auto-save to avoid issues
+//     if (typeof agt !== 'undefined' && agt.utils.form.field.is_empty(frm.doc.terms_and_conditions)) {
+//         frappe.db.get_value('Terms and Conditions', 'Term 4.1', 'terms', (r: { terms?: string }) => {
+//             if (r?.terms) {
+//                 frm.set_value('terms_and_conditions', r.terms);
+//                 agt.utils.dialog.show_debugger_alert(frm, 'Terms loaded.', 'green', 5);
+//             } else {
+//                 agt.utils.dialog.show_debugger_alert(frm, 'Terms not found.', 'red', 5);
+//             }
+//             frm.set_df_property('terms_and_conditions', 'read_only', 1);
+//             frm.set_df_property('terms_and_conditions', 'hidden', 1);
+//             frm.refresh_field('terms_and_conditions');
+//             // frm.dirty();
+//             // frm.save();
+//         });
+//     }
+// }
 
 function fields_listener(frm: FrappeForm<ComplianceStatement>) {
     fields_handler(frm);
