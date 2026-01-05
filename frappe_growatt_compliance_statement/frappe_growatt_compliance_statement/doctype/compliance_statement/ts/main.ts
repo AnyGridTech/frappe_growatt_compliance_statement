@@ -536,6 +536,16 @@ function read_only_handler(frm: FrappeForm<ComplianceStatement>) {
 
     frm.set_df_property('button_terms_and_conditions', 'hidden', (isAdvancedWorkflow) ? 1 : 0);
     frm.set_df_property('confirm_all', 'read_only', (frm.doc.confirm_all && isAdvancedWorkflow) ? 1 : 0);
+    
+    // Apply read_only to all fields when confirm_all is checked
+    if (frm.doc.confirm_all) {
+        Object.keys(frm.fields_dict).forEach((fieldname) => {
+            const field = frm.fields_dict[fieldname];
+            if (field && field.df && field.df.fieldtype !== 'Section Break' && field.df.fieldtype !== 'Column Break') {
+                frm.set_df_property(fieldname, 'read_only', 1);
+            }
+        });
+    }
 }
 
 // function load_terms(frm: FrappeForm<ComplianceStatement>) {
