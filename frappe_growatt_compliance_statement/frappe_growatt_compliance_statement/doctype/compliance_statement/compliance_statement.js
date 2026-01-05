@@ -167,8 +167,10 @@
       }
       frm.doc.cust_attachs = [];
       frm.refresh_field("cust_attachs");
-      const docType = type === "Individual" ? "RG" : "Contrato Social";
-      frm.add_child("cust_attachs", { attach_type: docType });
+      const docType = type === "Individual" ? ["RG", "Termo de Servi\xE7o"] : ["Contrato Social", "Termo de Servi\xE7o"];
+      docType.forEach((dt) => {
+        frm.add_child("cust_attachs", { attach_type: dt });
+      });
       frappe.show_alert({ message: "Please insert the required documents for the installer.", indicator: "yellow" }, 10);
       frappe.utils.play_sound("alert");
       frm.refresh_field("cust_attachs");
@@ -386,7 +388,8 @@
     }
     frm.set_df_property("button_terms_and_conditions", "hidden", isAdvancedWorkflow ? 1 : 0);
     frm.set_df_property("confirm_all", "read_only", frm.doc.confirm_all && isAdvancedWorkflow ? 1 : 0);
-    if (frm.doc.confirm_all) {
+    const finishedWfState = agt.metadata.doctype.compliance_statement.workflow_state.finished.name;
+    if (frm.doc.confirm_all && frm.doc.workflow_state === finishedWfState) {
       Object.keys(frm.fields_dict).forEach((fieldname) => {
         const field = frm.fields_dict[fieldname];
         if (field && field.df && field.df.fieldtype !== "Section Break" && field.df.fieldtype !== "Column Break") {
